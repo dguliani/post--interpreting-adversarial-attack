@@ -1,0 +1,205 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <script src="https://distill.pub/template.v1.js"></script> -->
+  <script src="template.v2.js"></script>
+    
+  <style>
+    body {
+      --gray-bg: hsl(0, 0%, 97%);
+      --gray-border: rgba(0, 0, 0, 0.1);
+      --border-radius: 5px;
+    }
+
+    d-title {
+      overflow-y: hidden;
+      padding-bottom: 0;
+    }
+
+    d-title h1, d-title p {
+      grid-column: page;
+    }
+
+    d-figure {
+      margin: 20px 0 40px;
+    }
+
+    d-slider {
+      width: 100%;
+    }
+
+    @media (max-width: 1280px) {
+      d-title br.conditional {
+        display: none;
+      }
+    }
+
+    #Teaser {
+      margin-top: 0;
+      margin-bottom: 0;
+      background: var(--gray-bg);
+      border-top: 1px solid var(--gray-border);
+      min-height: 100px;
+    }
+
+    figure.full-width {
+      grid-column: screen;
+    }
+
+    #AttributionSpatial {
+      background: var(--gray-bg);
+      padding: 20px 0;
+      border-top: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    #AttributionChannel, #ActivationGroups, #AttributionGroups {
+      background: var(--gray-bg);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-top: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    #ActivationGroups {
+      display: block;
+    }
+    
+    .attribution_list {
+      display: inline-block;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .attribution_list li {
+      position: relative;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-column-gap: 10px;
+      margin-bottom: 0;
+      text-transform: capitalize;
+      width: 100%;
+    }
+
+    .attribution_list li span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .attribution_list .scent {
+      display: flex;
+      position: relative;
+      align-items: center;
+    }
+
+    .attribution_list .scent div {
+      left: 0;
+      background: #ccc;
+      height: 10px;
+    }
+
+    .red { color: #c82829; border-color: #c82829 }
+    .orange { color: #f5871f; border-color: #f5871f }
+    .yellow { color: #eab700; border-color: #eab700 }
+    .green { color: #718c00; border-color: #718c00 }
+    .aqua { color: #3e999f; border-color: #3e999f }
+    .blue { color: #4271ae; border-color: #4271ae }
+    .purple { color: #8959a8; border-color: #8959a8 }
+
+
+
+    /* Heights for progressively loaded graphics */
+    @media (min-width: 1000px) {
+      #Teaser {
+        /* min-height: 660px; */
+      }
+
+      #AttributionChannel {
+        min-height: 608px;
+      }
+
+      #AllActivationGrids {
+        min-height: 250px;
+      }
+
+      #AllActivationGridsMagnitude {
+        min-height: 250px;
+      }
+
+      #AttributionSpatial {
+        min-height: 500px;
+      }
+
+      #ActivationGroups {
+        min-height: 800px;
+      }
+
+      #AttributionGroups{
+        min-height: 722px;
+      }
+    }
+
+
+  </style>
+</head>
+<d-front-matter>
+    <script type="text/json">{
+    "title": "Intepreting Adversarial Attack",
+    "description": "We apply interpretability techniques to adversarial examples to understand how attacks unfold on a network —- and develop more semantic tools to interpret network reasoning.",
+    "authors": [
+      {
+        "author": "Dhruv Guliani",
+        "authorURL": "https://dguliani.github.io/",
+        "affiliation": "Connected",
+        "affiliationURL": "https://connected.ai"
+      }
+    ]
+    }</script>
+  </d-front-matter> 
+<body>
+  <d-title>
+    <h1>Intepreting Adversarial Attacks</h1>
+    <h2></h2>
+    <dt-byline></dt-byline>
+    <p>Interpretability techniques are now mature enough to study various inputs to neural networks. <br>
+      We apply interpretability techniques to adversarial examples to understand how attacks unfold on a network — <br class="conditional"> and develop more semantic tools to interpret network reasoning.
+    </p>
+  </d-title>
+  
+  <d-article>
+    <p>In recent years, the field of adversarial example research has seen a flurry of new ways to attack neural networks
+       (usually vision networks) and defend against them. Proposed defensive techniques have centered primarily around gradient masking 
+       [cite all the appropriate papers] and ... (find other types of defenses). 
+
+       Critical analyses of this new field of research has also begun asking the important question "why are we studying adversarial attacks and defenses". 
+       (talk about motivation paper here). 
+
+       Here, we will explain different attack models and use interpretability techniques <d-cite key="olah2018blocks"></d-cite> 
+       to understand how different attacks unfold, thus developing new tools to help interpret model reasoning. 
+
+       ** Transfer learning in adversarial example generation 
+    </p>
+
+    <h2>Attack Methodologies</h2>
+    <h3>Goals of the Attacker</h3>
+    <h3>Model Access</h3>
+    <h3>Summary of Approaches</h3>
+    <h2>What Adversarial Examples Look Like</h2>
+    <h2>Carriacatures (needs better title)</h2>
+    <p>We can also cite <d-cite key="carlini2016eval,gilmer2018motiv"></d-cite> external publications.</p>
+  </d-article>
+  <d-appendix>
+    <h3>Discussion and Review</h3>
+    <p>
+    </p>
+    <d-footnote-list></d-footnote-list>
+    <d-citation-list></d-citation-list>
+  </d-appendix>
+  
+  <d-bibliography src="bibliography.bib"></d-bibliography>
+    
+</body>
+
