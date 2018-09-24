@@ -1,0 +1,190 @@
+<!--
+  Copyright 2018 Google LLC
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<:Window bind:scrollY="scrollY" bind:innerWidth="winWidth" />
+
+<div ref:layerDiv class="layer" style="--cell-size: {{cell_size}}px; 
+  --layer-size: {{layer_size}}px; width: {{layer_size}}px;
+  min-height: {{layer_size}}px;">
+
+
+
+  <slot name="background"></slot>
+
+  <img src="{{img_src}}"
+    on:mousemove="set_pos_hover(event, this.getBoundingClientRect())"
+    on:mouseover="set_layer_hover(layer)"
+    on:mouseout="clear_hover()" />
+  
+  {{#if show_zoom}}
+    <div class="cell_hover" style="left: {{pos_snap[0] * cell_size}}px;
+      top: {{pos_snap[1] * cell_size}}px;
+      border-color: {{magnitude ? '#666' : '#fff'}}"></div>
+  {{/if}}
+
+  <slot name="foreground"></slot>
+
+  {{#if show_zoom}}
+    <div class="sprite_container {{$ag_pos_hover === undefined ? 'transition' : ''}} 
+                {{$ag_layer_hover === layer ? 'layer_hover' : ''}}" 
+      style="left: {{zoom_left}}px; top: {{pos[1]+15}}px;">
+      <Sprite bg_img="examples/activations/{{$example}}/{{layer}}.jpeg" 
+        size="74" sprite_size="{{sprite_cell_size}}" 
+        x="{{pos_snap[0]}}" y="{{pos_snap[1]}}"></Sprite>
+    </div>
+  {{/if}}
+
+       {{#if show_layer_name}}
+      <h4>{{layer}}</h4>
+      {{/if}}
+
+</div>
+
+<style>
+  .layer {
+    display: inline-block;
+    position: relative;
+    margin: 0 10px;
+  }
+
+  h4 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    border-top: 1px solid rgba(0, 0 , 0, 0.1);
+    padding-top: 10px;
+  }
+
+  .layer img { 
+    width: 100%; 
+    border-radius: var(--border-radius);
+  }
+
+  .sprite_container {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .sprite_container .outer {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+
+  .sprite_container.transition {
+    transition-property: left, top;
+    transition-duration: .25s;
+    transition-timing-function: ease-in-out;
+  }
+
+  .sprite_container .outer { float: left; }
+
+  .cell_hover {
+    position: absolute;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1.5px dashed #fff;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  div[slot] .outer {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  import Sprite from './Sprite.html'
+  const layers = require('../../static/examples').layers;
+
+  export default {
+    data() {
+      return {
+        magnitude: false,
+        layer: 'mixed4d',
+        layer_size: 100,
+        layer_hover: 'mixed4d',
+        pos_hover: undefined,
+        pos_snap: [0, 0],
+        show_zoom: true,
+        show_layer_name: true
+      };
+    },
+
+    computed: {
+      img_src($example, layer, magnitude) {
+        const src = `examples/activations/${$example}/${layer}`;
+        return src + (magnitude ? '-magnitude.png' : '.jpeg');
+      },
+
+      cell_size(layer, layer_size) {
+        const sz = layers[layer];
+        return layer_size / (sz[0] * sz[1]) * sz[1];
+      },
+
+      sprite_cell_size(layer) {
+        return layers[layer][1]
+      },
+
+      pos_init(layer_size) {
+        return [layer_size / 2, layer_size * 4 / 5]
+      },
+
+      pos($ag_pos_hover, pos_init) {
+        return $ag_pos_hover || pos_init;
+      },
+
+      pos_snap(layer, layer_size, pos) {
+        return [
+          Math.floor(layers[layer][0] * pos[0] / layer_size),
+          Math.floor(layers[layer][0] * pos[1] / layer_size)
+        ];
+      },
+
+      zoom_left (pos, layer_size) {
+        const width = 75;
+        const margin = 15;
+        return pos[0] + margin + width < layer_size ?
+          pos[0] + margin : pos[0] - margin - width;
+      }
+    },
+
+    methods: {
+      set_layer_hover(ag_layer_hover) {
+        this.store.set({ag_layer_hover})
+      },
+
+      set_pos_hover(event, bb) {
+        const x = bb.left, y = bb.top + this.get('scrollY');
+        this.store.set({
+          ag_pos_hover: [event.pageX - x, event.pageY - y]
+        });
+      },
+
+      clear_hover() {
+        this.store.set({
+          ag_layer_hover: undefined,
+          ag_pos_hover: undefined
+        });
+      }
+    },
+
+    components: {Sprite}
+  }
+
+</script>
